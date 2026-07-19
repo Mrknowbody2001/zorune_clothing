@@ -9,7 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-cormorant);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -126,5 +126,161 @@
   }
   html {
     @apply font-sans;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--foreground) 18%, transparent);
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading), serif;
+  }
+
+  .rich-text-editor {
+    line-height: 1.7;
+  }
+
+  .rich-text-editor h1,
+  .rich-text-content h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+  }
+
+  .rich-text-editor h2,
+  .rich-text-content h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 0.65rem;
+  }
+
+  .rich-text-editor h3,
+  .rich-text-content h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 0.65rem;
+  }
+
+  .rich-text-editor p,
+  .rich-text-content p,
+  .rich-text-editor div,
+  .rich-text-content div {
+    margin: 0 0 0.75rem;
+  }
+
+  .rich-text-editor ul,
+  .rich-text-content ul {
+    list-style: disc;
+    margin: 0 0 0.75rem 1.4rem;
+  }
+
+  .rich-text-editor ol,
+  .rich-text-content ol {
+    list-style: decimal;
+    margin: 0 0 0.75rem 1.4rem;
+  }
+
+  .rich-text-editor li,
+  .rich-text-content li {
+    margin: 0.2rem 0;
+  }
+
+  .rich-text-editor a,
+  .rich-text-content a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .rich-text-content > :last-child,
+  .rich-text-editor > :last-child {
+    margin-bottom: 0;
+  }
+
+  .storefront-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .mask-fade-bottom {
+    mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes storefront-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+@keyframes storefront-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes storefront-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes storefront-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-storefront-float {
+    animation: storefront-float 9s ease-in-out infinite;
+  }
+
+  .animate-storefront-float-slow {
+    animation: storefront-float 12s ease-in-out infinite;
+  }
+
+  .animate-storefront-shimmer {
+    background-size: 200% 100%;
+    animation: storefront-shimmer 5s linear infinite;
+  }
+
+  .animate-storefront-marquee {
+    animation: storefront-marquee 20s linear infinite;
+  }
+
+  .animate-storefront-rise {
+    opacity: 0;
+    animation: storefront-rise 0.8s ease-out forwards;
   }
 }

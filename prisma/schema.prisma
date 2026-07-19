@@ -5,11 +5,80 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  subCategoryId String
+  subCategory SubCategory @relation(fields: [subCategoryId], references: [id])
+
+  seoTitle    String?
+  seoDesc     String?
+  seoTags     String?
+
+  images String[] @default([])
+  thumbnail String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([subCategoryId])
+}
+
+model Category {
+  id            String        @id @default(cuid())
+  name          String        @unique
+  products      Product[]
+  subcategories SubCategory[]
+  galleryItems  GalleryItem[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model SubCategory {
+  id         String   @id @default(cuid())
+  name       String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products   Product[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([categoryId])
+  @@unique([name, categoryId])
+}
+
+model GallerySection {
+  id        String        @id @default(cuid())
+  maxItems  Int           @default(4)
+  items     GalleryItem[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model GalleryItem {
+  id               String         @id @default(cuid())
+  imageUrl         String
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id])
+  gallerySectionId String
+  gallerySection   GallerySection @relation(fields: [gallerySectionId], references: [id], onDelete: Cascade)
+  position         Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([categoryId])
+  @@index([gallerySectionId, position])
 }
